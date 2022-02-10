@@ -3,6 +3,7 @@
 const basketCountEl = document.querySelector(".cartIconWrap span");
 const basketTotalEl = document.querySelector(".basketTotalValue");
 const basketEl = document.querySelector(".basket");
+const basketTotal = document.querySelector(".basketTotal");
  
 document.querySelector(".cartIconWrap").addEventListener("click", () => {
 	basketEl.classList.toggle("hidden");
@@ -41,5 +42,31 @@ function getTotalBasketPrice() {
 }
 
 function productBasket(id) {
-	
+	const basketTotEls = basketEl
+	.querySelector(`.basketRow[data-productId= "${id}"]`);
+	if(!basketTotEls) {
+		productBasket(id);
+		return;
+	}
+
+	basketTotEls.querySelector(".productCount").textContent = basket[id].count;
+	basketTotEls.querySelector(".productTotalRow")
+	.textContent = basket[id].count * basket[id].price;
+}
+
+
+function productBasket(productId) {
+  const productRow = `
+    <div class="basketRow" data-productId="${productId}">
+      <div>${basket[productId].name}</div>
+      <div>
+        <span class="productCount">${basket[productId].count}</span> шт.
+      </div>
+      <div>$${basket[productId].price}</div>
+      <div>
+        $<span class="productTotalRow">${(basket[productId].price * basket[productId].count).toFixed(2)}</span>
+      </div>
+    </div>
+    `;
+  basketTotal.insertAdjacentHTML("beforebegin", productRow);
 }
